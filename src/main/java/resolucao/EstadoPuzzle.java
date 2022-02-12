@@ -149,6 +149,7 @@ public class EstadoPuzzle implements Estado {
     @Override
     public List<EstadoPuzzle> sucessores() {
         List<EstadoPuzzle> suc = new LinkedList<>();
+
         // Definir as possibilidades para o proximo estado
 
         // Cuidar para nao alterar da propria classe
