@@ -17,7 +17,7 @@ public class EstadoPuzzle implements Estado {
             return cores;
         }
 
-        //Coluna() {}
+        Coluna() {}
 
         Coluna(int[] cores) {
             this.cores = cores;
