@@ -107,12 +107,10 @@ public class EstadoPuzzle implements Estado {
 
     }
 
-    private int a;
-    private int z[];
+    private Coluna colunas[];
 
-    public EstadoPuzzle(int a, int[] z) {
-        this.a = a;
-        this.z = z;
+    public EstadoPuzzle(Coluna[] colunas) {
+        this.colunas = colunas;
     }
 
     @Override
@@ -125,9 +123,18 @@ public class EstadoPuzzle implements Estado {
         // Verificar se para cada tubo as cores sao iguais
         // Feito antes do sucessores
 
-        for (int i = 0; i < z.length; i++) {
-            if (z[0] == 0) {
-                return false;
+        // Eh meta se percorrer todas as colunas e todas as colunas sao iguais
+        for (int i = 0; i < colunas.length; i++) {
+            //Verificar se na coluna tem cores
+            if (colunas[i].getCores().length != 0) {
+                //Percorrer as cores para ver se eh tudo igual
+                //Percorre da segunda ate a ultima verificando se eh igual a primeira
+                for (int x = 1; x < colunas[i].getCores().length; x++) {
+                    // Verifica se a linha cor atual eh igual a primeira
+                    if (colunas[i].getCores()[x] != colunas[i].getCores()[0]) {
+                        return false;
+                    }
+                }
             }
         }
 
@@ -145,8 +152,6 @@ public class EstadoPuzzle implements Estado {
         // Definir as possibilidades para o proximo estado
 
         // Cuidar para nao alterar da propria classe
-        int[] z2 = Arrays.copyOf(z, z.length);
-        suc.add(new EstadoPuzzle(a, z2));
 
         return suc;
     }
@@ -164,7 +169,8 @@ public class EstadoPuzzle implements Estado {
      * (usado para poda, conjunto de fechados)
      */
     public int hashCode() {
-        return "a".hashCode();
+        // Implementar
+        return 0;
     }
 
 }
