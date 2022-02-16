@@ -35,7 +35,7 @@ public class EstadoPuzzle implements Estado {
 
         @Override
         public String toString() {
-            return cores.toString();
+            return String.join(" ", cores);
         }
 
         @Override
@@ -129,7 +129,7 @@ public class EstadoPuzzle implements Estado {
                 //Percorre da segunda ate a ultima verificando se eh igual a primeira
                 for (int x = 1; x < colunas[i].getCores().length; x++) {
                     // Verifica se a linha cor atual eh igual a primeira
-                    if (colunas[i].getCores()[x] != colunas[i].getCores()[0]) {
+                    if (!colunas[i].getCores()[x].equalsIgnoreCase(colunas[i].getCores()[0])) {
                         return false;
                     }
                 }
@@ -171,5 +171,18 @@ public class EstadoPuzzle implements Estado {
         // Implementar
         return 0;
     }
+
+    @Override
+    public String toString() {
+        String retorno = "";
+
+        for (int iColunas = 0; iColunas < colunas.length; iColunas++) {
+            retorno += colunas[iColunas] + "\n";
+        }
+
+        return retorno;
+    }
+
+
 
 }

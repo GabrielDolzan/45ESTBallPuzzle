@@ -5,6 +5,7 @@ import busca.Nodo;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -13,7 +14,7 @@ import resolucao.EstadoPuzzle.Coluna;
 
 public class ViewPrincipal extends javax.swing.JFrame {
 
-    private String[] colunas;
+    private List<String> colunas;
 
     public ViewPrincipal() {
         initComponents();
@@ -60,6 +61,11 @@ public class ViewPrincipal extends javax.swing.JFrame {
         });
 
         btProfundidade.setText("Profundidade");
+        btProfundidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btProfundidadeActionPerformed(evt);
+            }
+        });
 
         taArquivo.setColumns(20);
         taArquivo.setRows(5);
@@ -106,7 +112,7 @@ public class ViewPrincipal extends javax.swing.JFrame {
     private void btSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSobreActionPerformed
         JOptionPane.showMessageDialog(null, "Alunos: "
             + "Gabriel Dolzan (gabriel.dolzan@hotmail.com) e "
-            + "Igor Ochner ()", "Sobre", JOptionPane.INFORMATION_MESSAGE);
+            + "Igor Ochner (xxxxxxxxxxxxxx)", "Sobre", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btSobreActionPerformed
 
     private void btCarregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCarregarActionPerformed
@@ -121,9 +127,8 @@ public class ViewPrincipal extends javax.swing.JFrame {
             File arquivo = file.getSelectedFile();
 
             try {
-                String dados = new String(Files.readAllBytes(arquivo.toPath()));
-                colunas = dados.split(" ");
-                taArquivo.setText(dados);
+                colunas = Files.readAllLines(arquivo.toPath());
+                taArquivo.setText(colunas.toString());
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Erro ao abrir o arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -133,9 +138,9 @@ public class ViewPrincipal extends javax.swing.JFrame {
     private void btLarguraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLarguraActionPerformed
         //Cria as colunas
         Coluna coluna = new Coluna();
-        Coluna[] ColunasModelo = null;
-        for (int i = 0; i < colunas.length; i++) {
-            ColunasModelo[i] = new Coluna(colunas[i].split(","));
+        Coluna[] ColunasModelo = new Coluna[colunas.size()];
+        for (int i = 0; i < colunas.size(); i++) {
+            ColunasModelo[i] = new Coluna(colunas.get(i).split(","));
         }
 
         // Define o estado inicial
@@ -146,18 +151,22 @@ public class ViewPrincipal extends javax.swing.JFrame {
         Nodo n = bLarg.busca(inicial);
 
         if (n == null) {
-            System.out.println("sem solucao!");
+            System.out.println("Sem solucao!");
         } else {
             System.out.println(n.getProfundidade());
             Nodo w = n;
-            while (w != null) {
+            /*while (w != null) {
                 EstadoPuzzle th = (EstadoPuzzle)w.getEstado();
                 //System.out.println(th.pino1);
                 w = w.getPai();
-            }
-            System.out.println("solucao:\n" + n.montaCaminho() + "\n\n");
+            }*/
+            taArquivo.setText(n.montaCaminho());
         }
     }//GEN-LAST:event_btLarguraActionPerformed
+
+    private void btProfundidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btProfundidadeActionPerformed
+        // implementar a busca em profundidade
+    }//GEN-LAST:event_btProfundidadeActionPerformed
 
     /**
      * @param args the command line arguments

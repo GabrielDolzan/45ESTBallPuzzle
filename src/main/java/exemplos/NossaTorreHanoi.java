@@ -247,12 +247,12 @@ public class NossaTorreHanoi implements Estado{
         } else {
         	System.out.println(n.getProfundidade());
         	Nodo w = n;
-        	while (w != null) {
+        	/*while (w != null) {
                         NossaTorreHanoi th = (NossaTorreHanoi)w.getEstado();
                         System.out.println(th.pino1);
         		w = w.getPai();
-        	}
-            System.out.println("solucao:\n" + n.montaCaminho() + "\n\n");
+        	}*/
+            //System.out.println("solucao:\n" + n.montaCaminho() + "\n\n");
         }
         /*
         // chama busca em profundidade
