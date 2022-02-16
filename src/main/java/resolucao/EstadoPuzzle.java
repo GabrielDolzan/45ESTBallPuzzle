@@ -9,23 +9,23 @@ import java.util.List;
  */
 public class EstadoPuzzle implements Estado {
 
-    private static class Coluna {
+    public static class Coluna {
 
-        private int cores[];
+        private String cores[];
 
-        public int[] getCores() {
+        public String[] getCores() {
             return cores;
         }
 
         Coluna() {}
 
-        Coluna(int[] cores) {
+        Coluna(String[] cores) {
             this.cores = cores;
         }
 
-        public boolean igual(int[] cores) {
+        public boolean igual(String[] cores) {
             for (int i = 0; i < cores.length; i++) {
-                if (this.cores[i] != cores[i]) {
+                if (this.cores[i].equalsIgnoreCase(cores[i])) {
                     return false;
                 }
             }
