@@ -1,6 +1,7 @@
 package resolucao;
 
 import busca.BuscaLargura;
+import busca.BuscaProfundidade;
 import busca.Nodo;
 import java.io.File;
 import java.io.IOException;
@@ -136,36 +137,62 @@ public class ViewPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btCarregarActionPerformed
 
     private void btLarguraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLarguraActionPerformed
-        //Cria as colunas
-        Coluna coluna = new Coluna();
-        Coluna[] ColunasModelo = new Coluna[colunas.size()];
+        //Cria com duas colunas adicionais
+        Coluna[] ColunasModelo = new Coluna[colunas.size() + 2];
         for (int i = 0; i < colunas.size(); i++) {
             ColunasModelo[i] = new Coluna(colunas.get(i).split(","));
         }
 
-        // Define o estado inicial
+        // Preenche as colunas adicionais vazias
+        ColunasModelo[colunas.size()] = new Coluna();
+        ColunasModelo[colunas.size() + 1] = new Coluna();
+
+        // Cria o estado inicial
         EstadoPuzzle inicial = new EstadoPuzzle(ColunasModelo);
 
-        // chama busca em largura
+        // Chama busca em largura
         BuscaLargura<EstadoPuzzle> bLarg = new BuscaLargura<EstadoPuzzle>();
         Nodo n = bLarg.busca(inicial);
 
         if (n == null) {
-            System.out.println("Sem solucao!");
+            taArquivo.setText("Sem solucao!");
         } else {
-            System.out.println(n.getProfundidade());
-            Nodo w = n;
-            /*while (w != null) {
+            taArquivo.setText(Integer.toString(n.getProfundidade()));
+            /*Nodo w = n;
+            while (w != null) {
                 EstadoPuzzle th = (EstadoPuzzle)w.getEstado();
                 //System.out.println(th.pino1);
                 w = w.getPai();
             }*/
-            taArquivo.setText(n.montaCaminho());
+            //taArquivo.setText(n.montaCaminho());
         }
     }//GEN-LAST:event_btLarguraActionPerformed
 
     private void btProfundidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btProfundidadeActionPerformed
-        // implementar a busca em profundidade
+        //Cria com duas colunas adicionais
+        Coluna[] ColunasModelo = new Coluna[colunas.size() + 2];
+        for (int i = 0; i < colunas.size(); i++) {
+            ColunasModelo[i] = new Coluna(colunas.get(i).split(","));
+        }
+
+        // Preenche as colunas adicionais vazias
+        ColunasModelo[colunas.size()] = new Coluna();
+        ColunasModelo[colunas.size() + 1] = new Coluna();
+
+        // Cria o estado inicial
+        EstadoPuzzle inicial = new EstadoPuzzle(ColunasModelo);
+
+        try {
+            Nodo n = new BuscaProfundidade<EstadoPuzzle>().busca(inicial);
+            if (n == null) {
+                taArquivo.setText("sem solucao!");
+            } else {
+                taArquivo.setText(Integer.toString(n.getProfundidade()));
+                //taArquivo.setText(n.montaCaminho());
+            }
+        } catch (Exception ex) {
+            taArquivo.setText("excecao!");
+        }
     }//GEN-LAST:event_btProfundidadeActionPerformed
 
     /**
