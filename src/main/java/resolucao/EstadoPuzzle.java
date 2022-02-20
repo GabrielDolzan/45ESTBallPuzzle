@@ -147,40 +147,6 @@ public class EstadoPuzzle implements Estado {
 
             return copia;
         }
-/*
-        public Coluna copiarSemDisco(int disco) {
-            Coluna copia = new Coluna(p1, p2, p3);
-
-            if (copia.p1 == disco)
-                copia.p1 = 0;
-            else
-                if (copia.p2 == disco)
-                    copia.p2 = 0;
-                else
-                    copia.p3 = 0;
-
-            return copia;
-        }
-
-        public Coluna copiarComDisco(int disco, int posPino) {
-            Coluna copia = new Coluna(p1, p2, p3);
-
-            if (posPino == 1) {
-                copia.p1 = disco;
-            } else {
-                if (posPino == 2) {
-                    copia.p2 = disco;
-                } else {
-                    copia.p3 = disco;
-                }
-            }
-
-            return copia;
-        }
-
-        public Coluna copiar() {
-            return new Coluna(cores);
-        }*/
 
     }
 
@@ -225,7 +191,7 @@ public class EstadoPuzzle implements Estado {
 
             for (int j = 0; j < colunas.length; j++) {
                 // Se a coluna de origem possui bola
-                // Se a coluna de origem nao esta pronta
+                // Se a coluna de origem nao esta correta
                 // Se a coluna de destino nao esta cheia
                 // Se a coluna de destino nao possui bola ou pode empilhar
                 if (colunas[i].possuiBola()
@@ -256,9 +222,6 @@ public class EstadoPuzzle implements Estado {
                                 EstadoPuzzle sucessor = new EstadoPuzzle(colunaSucessor);
 
                                 //Adiciona sucessor
-
-                                // TA ADICIONANDO MAIS CORES
-
                                 suc.add(sucessor);
                             }
                         }
