@@ -66,7 +66,7 @@ public class EstadoPuzzle implements Estado {
                 return true;
             }
 
-            for (int iCor = 1; iCor < getCores().length; iCor++) {
+            for (int iCor = 1; iCor < 4; iCor++) {
                 // Verifica se esta cheio somente de uma cor
                 if (getCores()[iCor] == null || !getCores()[iCor].equalsIgnoreCase(getCores()[0])) {
                     return false;
@@ -120,7 +120,7 @@ public class EstadoPuzzle implements Estado {
 
         public void removeBola() {
             // Percorre de cima para baixo e retira a primeira que possuir
-            for (int i = 3; i > 0; i--) {
+            for (int i = 3; i >= 0; i--) {
                 if (cores[i] != null) {
                     cores[i] = null;
                     break;
@@ -256,6 +256,9 @@ public class EstadoPuzzle implements Estado {
                                 EstadoPuzzle sucessor = new EstadoPuzzle(colunaSucessor);
 
                                 //Adiciona sucessor
+
+                                // TA ADICIONANDO MAIS CORES
+
                                 suc.add(sucessor);
                             }
                         }
