@@ -129,7 +129,7 @@ public class ViewPrincipal extends javax.swing.JFrame {
 
             try {
                 colunas = Files.readAllLines(arquivo.toPath());
-                taArquivo.setText(colunas.toString());
+                taArquivo.setText(getEstadoInicial().formataExibir());
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Erro ao abrir o arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -169,18 +169,8 @@ public class ViewPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btLarguraActionPerformed
 
     private void btProfundidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btProfundidadeActionPerformed
-        //Cria com duas colunas adicionais
-        Coluna[] ColunasModelo = new Coluna[colunas.size() + 2];
-        for (int i = 0; i < colunas.size(); i++) {
-            ColunasModelo[i] = new Coluna(colunas.get(i).split(","));
-        }
-
-        // Preenche as colunas adicionais vazias
-        ColunasModelo[colunas.size()] = new Coluna();
-        ColunasModelo[colunas.size() + 1] = new Coluna();
-
         // Cria o estado inicial
-        EstadoPuzzle inicial = new EstadoPuzzle(ColunasModelo);
+        EstadoPuzzle inicial = getEstadoInicial();
 
         try {
             Nodo n = new BuscaProfundidade<EstadoPuzzle>().busca(inicial);
@@ -194,6 +184,21 @@ public class ViewPrincipal extends javax.swing.JFrame {
             taArquivo.setText("excecao!");
         }
     }//GEN-LAST:event_btProfundidadeActionPerformed
+
+    private EstadoPuzzle getEstadoInicial() {
+        //Cria com duas colunas adicionais
+        Coluna[] ColunasModelo = new Coluna[colunas.size() + 2];
+        for (int i = 0; i < colunas.size(); i++) {
+            ColunasModelo[i] = new Coluna(colunas.get(i).split(","));
+        }
+
+        // Preenche as colunas adicionais vazias
+        ColunasModelo[colunas.size()] = new Coluna();
+        ColunasModelo[colunas.size() + 1] = new Coluna();
+
+        // Cria o estado inicial
+        return new EstadoPuzzle(ColunasModelo);
+    }
 
     /**
      * @param args the command line arguments

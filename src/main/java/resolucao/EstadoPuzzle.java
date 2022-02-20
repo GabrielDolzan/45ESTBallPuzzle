@@ -148,6 +148,10 @@ public class EstadoPuzzle implements Estado {
             return copia;
         }
 
+        public String getBola(int linha) {
+            return cores[linha];
+        }
+
     }
 
     private Coluna colunas[];
@@ -270,6 +274,22 @@ public class EstadoPuzzle implements Estado {
         return String.join("\n", string);
     }
 
+    public String formataExibir() {
+        String[] linhas = new String[4];
+        String texto = "";
 
+        for (int linha = 3; linha >= 0; linha--) {
+            for (int coluna = 0; coluna < colunas.length; coluna++) {
+                if (coluna == 0) {
+                    linhas[linha] = colunas[coluna].getBola(linha) + " ";
+                } else {
+                    linhas[linha] += colunas[coluna].getBola(linha) + " ";
+                }
+            }
+            texto += linhas[linha] + "\n";
+        }
+
+        return texto;
+    }
 
 }
