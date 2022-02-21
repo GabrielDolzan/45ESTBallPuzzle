@@ -4,19 +4,41 @@
  */
 package resolucao;
 
+import busca.BuscaLargura;
+import busca.Nodo;
+import java.util.List;
+
 /**
  *
  * @author Jadir
  */
 public class ViewResolucao extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ViewResolucao
-     */
+    private List<String> colunas;
+    private ViewPrincipal principal;
+    
     public ViewResolucao() {
+        populaTextArea();
+        
         initComponents();
+        this.setLocationRelativeTo(null);
+        
+    }
+    
+    public void populaTextArea(){
+       if(principal.getCont()==1 ){
+//           largura
+       }else{
+//           profundidade
+       }
+//        taCAminho.setText(t);
+       
     }
 
+    public void exibir() {
+        this.setVisible(true);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,21 +48,94 @@ public class ViewResolucao extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jScrollPane1 = new javax.swing.JScrollPane();
+        taCAminho = new javax.swing.JTextArea();
+        btAntes = new javax.swing.JButton();
+        btSuce = new javax.swing.JButton();
+        btVoltar = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Resolução");
+
+        taCAminho.setColumns(20);
+        taCAminho.setRows(5);
+        jScrollPane1.setViewportView(taCAminho);
+
+        btAntes.setText("Antecessor");
+        btAntes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAntesActionPerformed(evt);
+            }
+        });
+
+        btSuce.setText("Sucessor");
+
+        btVoltar.setText("Voltar");
+        btVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btVoltarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(btAntes)
+                .addGap(98, 98, 98)
+                .addComponent(btSuce)
+                .addContainerGap(95, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btVoltar)
+                .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btAntes)
+                    .addComponent(btSuce))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addComponent(btVoltar)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoltarActionPerformed
+       ViewPrincipal cont = new ViewPrincipal();
+                cont.exibir();
+
+               setVisible(false);
+    }//GEN-LAST:event_btVoltarActionPerformed
+
+    private void btAntesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAntesActionPerformed
+        
+        
+        
+        Nodo n = principal.largura();
+           // n.montaCaminho(n);
+            
+            Nodo w = n;
+            while (w != null) {
+                EstadoPuzzle th = (EstadoPuzzle)w.getEstado();
+               //System.out.println(th.pino1);
+                w = w.getPai();
+            }
+            taCAminho.setText(n.montaCaminho());
+//        principal.formataExibir();
+    }//GEN-LAST:event_btAntesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +173,10 @@ public class ViewResolucao extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAntes;
+    private javax.swing.JButton btSuce;
+    private javax.swing.JButton btVoltar;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea taCAminho;
     // End of variables declaration//GEN-END:variables
 }
