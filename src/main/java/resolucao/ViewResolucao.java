@@ -1,44 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package resolucao;
 
-import busca.BuscaLargura;
 import busca.Nodo;
-import java.util.List;
 
-/**
- *
- * @author Jadir
- */
 public class ViewResolucao extends javax.swing.JFrame {
 
-    private List<String> colunas;
-    private ViewPrincipal principal;
-    
-    public ViewResolucao() {
-        populaTextArea();
-        
+    private int noAtual;
+    private EstadoPuzzle caminho[];
+    private int profundidade;
+
+    public ViewResolucao(Nodo n) {
+        this.setTitle("Profundidade: " + n.getProfundidade());
         initComponents();
+
+        // Seta o resultado na tela
+        EstadoPuzzle estado = (EstadoPuzzle) n.getEstado();
+        taCaminho.setText(estado.formataExibir());
+
+        // Cria um array com os nodos
+        profundidade = n.getProfundidade();
+        caminho = new EstadoPuzzle[profundidade + 1];
+        for (int i = profundidade; i >= 0; i--) {
+            caminho[i] = estado;
+            n = n.getPai();
+            if (n != null) {
+                estado = (EstadoPuzzle) n.getEstado();
+            }
+        }
+
+        noAtual = profundidade;
         this.setLocationRelativeTo(null);
-        
-    }
-    
-    public void populaTextArea(){
-       if(principal.getCont()==1 ){
-//           largura
-       }else{
-//           profundidade
-       }
-//        taCAminho.setText(t);
-       
     }
 
     public void exibir() {
         this.setVisible(true);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,7 +45,7 @@ public class ViewResolucao extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        taCAminho = new javax.swing.JTextArea();
+        taCaminho = new javax.swing.JTextArea();
         btAntes = new javax.swing.JButton();
         btSuce = new javax.swing.JButton();
         btVoltar = new javax.swing.JButton();
@@ -57,9 +53,10 @@ public class ViewResolucao extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Resolução");
 
-        taCAminho.setColumns(20);
-        taCAminho.setRows(5);
-        jScrollPane1.setViewportView(taCAminho);
+        taCaminho.setColumns(20);
+        taCaminho.setRows(5);
+        taCaminho.setEnabled(false);
+        jScrollPane1.setViewportView(taCaminho);
 
         btAntes.setText("Antecessor");
         btAntes.addActionListener(new java.awt.event.ActionListener() {
@@ -69,6 +66,11 @@ public class ViewResolucao extends javax.swing.JFrame {
         });
 
         btSuce.setText("Sucessor");
+        btSuce.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSuceActionPerformed(evt);
+            }
+        });
 
         btVoltar.setText("Voltar");
         btVoltar.addActionListener(new java.awt.event.ActionListener() {
@@ -83,14 +85,14 @@ public class ViewResolucao extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(btAntes)
-                .addGap(98, 98, 98)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btSuce)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addGap(75, 75, 75))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btVoltar)
@@ -114,28 +116,25 @@ public class ViewResolucao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoltarActionPerformed
-       ViewPrincipal cont = new ViewPrincipal();
-                cont.exibir();
+        ViewPrincipal cont = new ViewPrincipal();
+        cont.exibir();
 
-               setVisible(false);
+        setVisible(false);
     }//GEN-LAST:event_btVoltarActionPerformed
 
     private void btAntesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAntesActionPerformed
-        
-        
-        
-        Nodo n = principal.largura();
-           // n.montaCaminho(n);
-            
-            Nodo w = n;
-            while (w != null) {
-                EstadoPuzzle th = (EstadoPuzzle)w.getEstado();
-               //System.out.println(th.pino1);
-                w = w.getPai();
-            }
-            taCAminho.setText(n.montaCaminho());
-//        principal.formataExibir();
+        if (noAtual > 0) {
+            noAtual--;
+            taCaminho.setText(caminho[noAtual].formataExibir());
+        }
     }//GEN-LAST:event_btAntesActionPerformed
+
+    private void btSuceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuceActionPerformed
+        if (noAtual < profundidade) {
+            noAtual++;
+            taCaminho.setText(caminho[noAtual].formataExibir());
+        }
+    }//GEN-LAST:event_btSuceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,7 +166,7 @@ public class ViewResolucao extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewResolucao().setVisible(true);
+                //new ViewResolucao().setVisible(true);
             }
         });
     }
@@ -177,6 +176,6 @@ public class ViewResolucao extends javax.swing.JFrame {
     private javax.swing.JButton btSuce;
     private javax.swing.JButton btVoltar;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea taCAminho;
+    private javax.swing.JTextArea taCaminho;
     // End of variables declaration//GEN-END:variables
 }

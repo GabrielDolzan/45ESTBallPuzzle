@@ -11,22 +11,17 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
-import org.w3c.dom.Node;
 import resolucao.EstadoPuzzle.Coluna;
 
 public class ViewPrincipal extends javax.swing.JFrame {
 
     private List<String> colunas;
-    private int cont;
+
     public ViewPrincipal() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
-    
-    public int getCont(){
-        return cont;
-    }
-    
+
     public void exibir() {
         this.setVisible(true);
     }
@@ -45,7 +40,6 @@ public class ViewPrincipal extends javax.swing.JFrame {
         btProfundidade = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         taArquivo = new javax.swing.JTextArea();
-        btPasso = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,32 +76,19 @@ public class ViewPrincipal extends javax.swing.JFrame {
         taArquivo.setEnabled(false);
         jScrollPane1.setViewportView(taArquivo);
 
-        btPasso.setText("Passo a passo");
-        btPasso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btPassoActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btPasso)
-                        .addGap(107, 107, 107))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(btCarregar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btLargura)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btProfundidade)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                        .addComponent(btSobre)))
+                .addGap(21, 21, 21)
+                .addComponent(btCarregar)
+                .addGap(18, 18, 18)
+                .addComponent(btLargura)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btProfundidade)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(btSobre)
                 .addGap(21, 21, 21))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -117,10 +98,8 @@ public class ViewPrincipal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btPasso)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btCarregar)
                     .addComponent(btSobre)
@@ -158,110 +137,48 @@ public class ViewPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btCarregarActionPerformed
 
-    public Nodo largura(){
-        //Cria com duas colunas adicionais
-        Coluna[] ColunasModelo = new Coluna[colunas.size() + 2];
-        for (int i = 0; i < colunas.size(); i++) {
-            ColunasModelo[i] = new Coluna(colunas.get(i).split(","));
-        }
-
-        // Preenche as colunas adicionais vazias
-        ColunasModelo[colunas.size()] = new Coluna();
-        ColunasModelo[colunas.size() + 1] = new Coluna();
-
-        // Cria o estado inicial
-        EstadoPuzzle inicial = new EstadoPuzzle(ColunasModelo);
-
-        // Chama busca em largura
-        BuscaLargura<EstadoPuzzle> bLarg = new BuscaLargura<EstadoPuzzle>();
-        Nodo n = bLarg.busca(inicial);
-
-        if (n == null) {
-            return null;
-        } else {
-            taArquivo.setText(Integer.toString(n.getProfundidade()));
-            /*Nodo w = n;
-            while (w != null) {
-                EstadoPuzzle th = (EstadoPuzzle)w.getEstado();
-                //System.out.println(th.pino1);
-                w = w.getPai();
-            }*/
-            //taArquivo.setText(n.montaCaminho());
-        }
-        return n;
-    }
-    
-    
     private void btLarguraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLarguraActionPerformed
-//       
-//        ViewResolucao reso = new ViewResolucao();
-//        reso.exibir();
-//        
-//        setVisible(false);        
-    
-    cont = 1;
-    
-//Cria com duas colunas adicionais
-        Coluna[] ColunasModelo = new Coluna[colunas.size() + 2];
-        for (int i = 0; i < colunas.size(); i++) {
-            ColunasModelo[i] = new Coluna(colunas.get(i).split(","));
+        if (colunas != null) {
+            // Cria o estado inicial
+            EstadoPuzzle inicial = getEstadoInicial();
+
+            // Chama busca em largura
+            BuscaLargura<EstadoPuzzle> bLarg = new BuscaLargura<EstadoPuzzle>();
+            Nodo n = bLarg.busca(inicial);
+
+            if (n == null) {
+                taArquivo.setText("Sem solucao!");
+            } else {
+                ViewResolucao reso = new ViewResolucao(n);
+                reso.exibir();
+
+                setVisible(false);
+            }
         }
-
-        // Preenche as colunas adicionais vazias
-        ColunasModelo[colunas.size()] = new Coluna();
-        ColunasModelo[colunas.size() + 1] = new Coluna();
-
-        // Cria o estado inicial
-        EstadoPuzzle inicial = new EstadoPuzzle(ColunasModelo);
-
-        // Chama busca em largura
-        BuscaLargura<EstadoPuzzle> bLarg = new BuscaLargura<EstadoPuzzle>();
-        Nodo n = bLarg.busca(inicial);
-
-        if (n == null) {
-            taArquivo.setText("Sem solucao!");
-        } else {
-            taArquivo.setText(Integer.toString(n.getProfundidade()));
-            /*Nodo w = n;
-            while (w != null) {
-                EstadoPuzzle th = (EstadoPuzzle)w.getEstado();
-                //System.out.println(th.pino1);
-                w = w.getPai();
-            }*/
-            //taArquivo.setText(n.montaCaminho());
-        }
-
     }//GEN-LAST:event_btLarguraActionPerformed
 
     private void btProfundidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btProfundidadeActionPerformed
-    
-        cont = 2;
+        if (colunas != null) {
+            // Cria o estado inicial
+            EstadoPuzzle inicial = getEstadoInicial();
 
-    // Cria o estado inicial
-        EstadoPuzzle inicial = getEstadoInicial();
+            try {
+                Nodo n = new BuscaProfundidade<EstadoPuzzle>().busca(inicial);
+                if (n == null) {
+                    taArquivo.setText("sem solucao!");
+                } else {
+                    ViewResolucao reso = new ViewResolucao(n);
+                    reso.exibir();
 
-        try {
-            Nodo n = new BuscaProfundidade<EstadoPuzzle>().busca(inicial);
-            if (n == null) {
-                taArquivo.setText("sem solucao!");
-            } else {
-                taArquivo.setText(Integer.toString(n.getProfundidade()));
-                //taArquivo.setText(n.montaCaminho());
+                    setVisible(false);
+
+                    taArquivo.setText(Integer.toString(n.getProfundidade()));
+                }
+            } catch (Exception ex) {
+                taArquivo.setText("excecao!");
             }
-        } catch (Exception ex) {
-            taArquivo.setText("excecao!");
         }
     }//GEN-LAST:event_btProfundidadeActionPerformed
-
-    private void btPassoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPassoActionPerformed
-        ViewResolucao reso = new ViewResolucao();
-        reso.exibir();
-        
-        setVisible(false);
-        
-        
-        
-    }//GEN-LAST:event_btPassoActionPerformed
 
     private EstadoPuzzle getEstadoInicial() {
         //Cria com duas colunas adicionais
@@ -317,7 +234,6 @@ public class ViewPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCarregar;
     private javax.swing.JButton btLargura;
-    private javax.swing.JButton btPasso;
     private javax.swing.JButton btProfundidade;
     private javax.swing.JButton btSobre;
     private javax.swing.JScrollPane jScrollPane1;

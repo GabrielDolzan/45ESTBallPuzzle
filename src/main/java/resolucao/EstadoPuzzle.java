@@ -4,9 +4,6 @@ import busca.Estado;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * NAO USAR ACENTUACAO
- */
 public class EstadoPuzzle implements Estado {
 
     public static class Coluna {
@@ -186,55 +183,49 @@ public class EstadoPuzzle implements Estado {
     public List<EstadoPuzzle> sucessores() {
         List<EstadoPuzzle> suc = new LinkedList<>();
 
-        // Definir as possibilidades para o proximo estado
-
         // Percorre todas as colunas e verifica se pode colocar em cima
         // ou adicionar numa coluna vazia
         for (int i = 0; i < colunas.length; i++) {
             String corTopo = colunas[i].getBolaTopo();
 
             for (int j = 0; j < colunas.length; j++) {
-                // Se a coluna de origem possui bola
-                // Se a coluna de origem nao esta correta
-                // Se a coluna de destino nao esta cheia
-                // Se a coluna de destino nao possui bola ou pode empilhar
+                boolean origemIgual = colunas[i].somenteMesmaCor();
+                boolean destinoIgual = colunas[j].somenteMesmaCor();
+
+                    // Se a coluna de origem possui bola
                 if (colunas[i].possuiBola()
+                    // Se a coluna de origem nao esta correta
                     && !colunas[i].tudoMesmaCor()
+                    // Se a coluna de destino nao esta cheia
                     && !colunas[j].cheia()
-                    && colunas[j].podeEmpilhar(corTopo)) {
-
+                    // Se a coluna de destino nao possui bola ou pode empilhar
+                    && colunas[j].podeEmpilhar(corTopo)
                     // Nao pode ser a mesma coluna
-                    if (i != j) {
-                        boolean origemIgual = colunas[i].somenteMesmaCor();
-                        boolean destinoIgual = colunas[j].somenteMesmaCor();
+                    && i != j
+                    // Nao pode se a origem esta tudo mesma cor e destino esta vazio
+                    && !(origemIgual && !colunas[j].possuiBola())
+                    // Nao pode se as duas colunas possuem somente a mesma cor
+                    // e a coluna atual eh maior
+                    && !(origemIgual && destinoIgual && colunas[i].tamanho() > colunas[j].tamanho())) {
 
-                        // Nao se a origem esta tudo mesma cor e destino esta vazio
-                        if (!(origemIgual && !colunas[j].possuiBola())) {
-
-                            if (!(origemIgual && destinoIgual && colunas[i].tamanho() > colunas[j].tamanho())) {
-                                // Executa a copia das colunas
-                                Coluna[] colunaSucessor = new Coluna[colunas.length];
-                                for (int k = 0; k < colunas.length; k++) {
-                                    colunaSucessor[k] = new Coluna(colunas[k].getCopia());
-                                }
-
-                                // Executa as alteracoes
-                                colunaSucessor[i].removeBola();
-                                colunaSucessor[j].adicionaBola(corTopo);
-
-                                //Cria um novo estado
-                                EstadoPuzzle sucessor = new EstadoPuzzle(colunaSucessor);
-
-                                //Adiciona sucessor
-                                suc.add(sucessor);
-                            }
-                        }
+                    // Executa a copia das colunas
+                    Coluna[] colunaSucessor = new Coluna[colunas.length];
+                    for (int k = 0; k < colunas.length; k++) {
+                        colunaSucessor[k] = new Coluna(colunas[k].getCopia());
                     }
+
+                    // Executa as alteracoes
+                    colunaSucessor[i].removeBola();
+                    colunaSucessor[j].adicionaBola(corTopo);
+
+                    //Cria um novo estado
+                    EstadoPuzzle sucessor = new EstadoPuzzle(colunaSucessor);
+
+                    //Adiciona sucessor
+                    suc.add(sucessor);
                 }
             }
         }
-
-        // Cuidar para nao alterar da propria classe
 
         return suc;
     }
@@ -281,9 +272,11 @@ public class EstadoPuzzle implements Estado {
         for (int linha = 3; linha >= 0; linha--) {
             for (int coluna = 0; coluna < colunas.length; coluna++) {
                 if (coluna == 0) {
-                    linhas[linha] = colunas[coluna].getBola(linha) + " ";
+                    linhas[linha] = String.format("%8s  |  ", colunas[coluna].getBola(linha)).replace(' ', '_');
+                    //linhas[linha] = colunas[coluna].getBola(linha) + " ";
                 } else {
-                    linhas[linha] += colunas[coluna].getBola(linha) + " ";
+                    linhas[linha] += String.format("%8s  |  ", colunas[coluna].getBola(linha)).replace(' ', '_');
+                    //linhas[linha] += colunas[coluna].getBola(linha) + " ";
                 }
             }
             texto += linhas[linha] + "\n";
