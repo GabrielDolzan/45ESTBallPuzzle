@@ -83,11 +83,11 @@ public class ViewPrincipal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(btCarregar)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addComponent(btLargura)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(86, 86, 86)
                 .addComponent(btProfundidade)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGap(87, 87, 87)
                 .addComponent(btSobre)
                 .addGap(21, 21, 21))
             .addGroup(layout.createSequentialGroup()
@@ -149,7 +149,9 @@ public class ViewPrincipal extends javax.swing.JFrame {
             if (n == null) {
                 taArquivo.setText("Sem solucao!");
             } else {
-                ViewResolucao reso = new ViewResolucao(n);
+                long tempo = bLarg.getStatus().getTempoDecorrido();
+
+                ViewResolucao reso = new ViewResolucao(n, tempo);
                 reso.exibir();
 
                 setVisible(false);
@@ -163,11 +165,14 @@ public class ViewPrincipal extends javax.swing.JFrame {
             EstadoPuzzle inicial = getEstadoInicial();
 
             try {
-                Nodo n = new BuscaProfundidade<EstadoPuzzle>().busca(inicial);
+                BuscaProfundidade<EstadoPuzzle> busca = new BuscaProfundidade<>();
+                Nodo n = busca.busca(inicial);
                 if (n == null) {
                     taArquivo.setText("sem solucao!");
                 } else {
-                    ViewResolucao reso = new ViewResolucao(n);
+                    long tempo = busca.getStatus().getTempoDecorrido();
+
+                    ViewResolucao reso = new ViewResolucao(n, tempo);
                     reso.exibir();
 
                     setVisible(false);

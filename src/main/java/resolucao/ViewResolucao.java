@@ -8,9 +8,9 @@ public class ViewResolucao extends javax.swing.JFrame {
     private EstadoPuzzle caminho[];
     private int profundidade;
 
-    public ViewResolucao(Nodo n) {
-        this.setTitle("Profundidade: " + n.getProfundidade());
+    public ViewResolucao(Nodo n, long tempo) {
         initComponents();
+        this.setTitle("Profundidade: " + n.getProfundidade() + ". Tempo: " + tempo + "ms.");
 
         // Seta o resultado na tela
         EstadoPuzzle estado = (EstadoPuzzle) n.getEstado();
@@ -51,7 +51,6 @@ public class ViewResolucao extends javax.swing.JFrame {
         btVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Resolução");
 
         taCaminho.setColumns(20);
         taCaminho.setRows(5);
@@ -85,7 +84,7 @@ public class ViewResolucao extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
